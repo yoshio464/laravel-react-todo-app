@@ -13,7 +13,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|max:255'
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'title' => 'タイトル',
         ];
     }
 }

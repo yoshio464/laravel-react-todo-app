@@ -52,4 +52,28 @@ class ExampleTest extends TestCase
         $response = $this->getJson('api/tasks');
         $response->assertJsonCount($task->count() - 1);
     }
+
+    public function test_reject_null_title_tasks_api()
+    {
+        $data = ['title' => ""];
+        $response = $this->postJson('api/tasks', $data);
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'title' => 'タイトルは、必ず指定してください'
+            ]);
+    }
+
+    public function test_reject_over_255_title_tasks_api()
+    {
+        $data = [
+            'title' => str_repeat('a', 256)
+        ];
+        $response = $this->postJson('api/tasks', $data);
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'title' => 'タイトルは、255文字以下にしてください。'
+            ]);
+    }
 }
