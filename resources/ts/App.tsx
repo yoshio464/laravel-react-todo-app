@@ -1,11 +1,22 @@
 import React from "react"
-import { Route } from "react-router-dom"
 import { Routers } from "./router"
+import { QueryClient, QueryClientProvider } from 'react-query'
 
-export const App = () => {
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+        mutations: {
+            retry: false,
+        }
+    }
+})
+
+export const App: React.FC = () => {
     return (
-        <>
+        <QueryClientProvider client={queryClient}>
             <Routers />
-        </>
+        </QueryClientProvider>
     )
 }
