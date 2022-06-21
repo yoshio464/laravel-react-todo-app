@@ -42,4 +42,39 @@ const useCreateTask = () => {
     })
 }
 
-export { TaskQuery, useUpdateDoneTask, useCreateTask }
+const useUpdateTask = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation(api.updateTask, {
+        onSuccess() {
+            queryClient.invalidateQueries('tasks')
+            toast.success('データの編集に成功しました')
+        },
+        onError(error: AxiosError) {
+            if (error.response?.data.errors) {
+                Object.values(error.response?.data.errors).map((messages: any) => {
+                    messages.map((message: string) => {
+                        toast.error(message)
+                    })
+                })
+            } else {
+                toast.error('データの編集に失敗しました');
+            }
+        }
+    })
+}
+
+const useDeleteTask = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation(api.deleteTask, {
+        onSuccess() {
+            queryClient.invalidateQueries('tasks')
+        },
+        onError() {
+            toast.error('データの削除に失敗しました');
+        }
+    })
+}
+
+export { TaskQuery, useUpdateDoneTask, useCreateTask, useUpdateTask, useDeleteTask }
