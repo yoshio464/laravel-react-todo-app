@@ -1,3 +1,5 @@
+import { Task } from "../types/Task"
+
 const axios = require('axios').default
 
 const getTasks = async () => {
@@ -5,4 +7,9 @@ const getTasks = async () => {
     return data
 }
 
-export { getTasks }
+const updateDoneTask = async ({id, is_done}: Task) => {
+    const { data } = await axios.patch(`api/tasks/update-done/${id}`, { is_done: !is_done})
+    return data
+}
+
+export { getTasks, updateDoneTask }

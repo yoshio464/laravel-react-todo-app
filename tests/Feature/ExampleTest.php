@@ -44,6 +44,18 @@ class ExampleTest extends TestCase
             ->assertJsonFragment($task->toArray());
     }
 
+    public function test_updateDone_tasks_api()
+    {
+        $task = Task::factory()->create();
+        $reverse = !$task->is_done;
+        $task->is_done = $reverse;
+        $response = $this->patchJson("api/tasks/update-done/{$task->id}", $task->toArray());
+
+        $response
+            ->assertOk()
+            ->assertJsonFragment($task->toArray());
+    }
+
     public function test_delete_tasks_api()
     {
         $task = Task::factory()->count(10)->create();

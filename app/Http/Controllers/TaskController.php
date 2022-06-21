@@ -83,6 +83,24 @@ class TaskController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Request  $request
+     * @param  \App\Models\Task  $task
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDone(Request $request, Task $task)
+    {
+        abort(500);
+
+        $task->is_done = $request->is_done;
+
+        return $task->update()
+            ? response()->json($task)
+            : response()->json([], 500);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Task  $task
