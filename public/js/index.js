@@ -2896,10 +2896,16 @@ exports.useDeleteTask = useDeleteTask;
 /*!*********************************!*\
   !*** ./resources/ts/router.tsx ***!
   \*********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
@@ -2907,6 +2913,8 @@ Object.defineProperty(exports, "__esModule", ({
 exports.Routers = void 0;
 
 var jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 
@@ -2916,7 +2924,17 @@ var help_1 = __webpack_require__(/*! ./pages/help */ "./resources/ts/pages/help/
 
 var login_1 = __webpack_require__(/*! ./pages/login */ "./resources/ts/pages/login/index.tsx");
 
+var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+
 var Routers = function Routers() {
+  (0, react_1.useEffect)(function () {
+    axios_1["default"].post('api/login', {
+      email: 'admin@gmail.com',
+      password: '12345'
+    }).then(function (response) {
+      console.log(response);
+    });
+  }, []);
   return (0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, {
     children: [(0, jsx_runtime_1.jsx)("header", Object.assign({
       className: "global-head"
@@ -2938,8 +2956,12 @@ var Routers = function Routers() {
           children: (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({
             to: "/login"
           }, {
-            children: "\u30ED\u30B0\u30A2\u30A6\u30C8"
+            children: "\u30ED\u30B0\u30A4\u30F3"
           }))
+        }), (0, jsx_runtime_1.jsx)("li", {
+          children: (0, jsx_runtime_1.jsx)("span", {
+            children: "\u30ED\u30B0\u30A2\u30A6\u30C8"
+          })
         })]
       })
     })), (0, jsx_runtime_1.jsxs)(react_router_dom_1.Routes, {
