@@ -14,7 +14,7 @@ class Task extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'is_done'];
+    protected $fillable = ['title', 'is_done', 'user_id'];
 
     /**
      * キャストする必要のある属性
@@ -23,5 +23,6 @@ class Task extends Model
      */
     protected $casts = [
         'is_done' => 'boolean',
+        'user_id' => 'int'
     ];
 }

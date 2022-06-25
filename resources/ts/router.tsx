@@ -1,34 +1,64 @@
 import React, { useEffect } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, RouteProps, Navigate, Outlet } from 'react-router-dom'
 import { TaskPage } from './pages/tasks'
 import { HelpPage } from './pages/help'
 import { LoginPage } from './pages/login'
-import axios from 'axios'
+import { useLogout, useUser } from './queries/AuthQuery'
+import { useAuth } from './hooks/AuthContext'
+import { NotFoundPage } from './pages/error'
 
 export const Routers: React.FC = () => {
+    const logout = useLogout()
+    const { isAuth, setIsAuth } = useAuth()
+    const { isLoading, data: authUser } = useUser()
 
     useEffect(() => {
-        axios.post('api/login',{
-            email: 'admin@gmail.com',
-            password: '12345'
-        }).then(response => {
-            console.log(response);
-        })
-    }, [])
+        if (authUser) {
+            setIsAuth(true)
+        }
+    }, [authUser])
+
+    const GuardRoute = () => {
+        return isAuth ? <Outlet /> : <Navigate to='/login' />
+    }
+
+    const LoginRoute = () => {
+        return !isAuth ? <Outlet /> : <Navigate to='/' />
+    }
+
+    const navigation = (
+        <header className="global-head">
+        <ul>
+            <li><Link to="/">ホーム</Link></li>
+            <li><Link to="/help">ヘルプ</Link></li>
+            <li onClick={() => logout.mutate()}><span>ログアウト</span></li>
+        </ul>
+        </header>
+    )
+
+    const loginNavigation = (
+        <header className="global-head">
+        <ul>
+            <li><Link to="/help">ヘルプ</Link></li>
+            <li><Link to="/login">ログイン</Link></li>
+        </ul>
+        </header>
+    )
+
+    if (isLoading) return <div className='loader'></div>
+
     return (
         <>
-            <header className="global-head">
-            <ul>
-                <li><Link to="/">ホーム</Link></li>
-                <li><Link to="/help">ヘルプ</Link></li>
-                <li><Link to="/login">ログイン</Link></li>
-                <li><span>ログアウト</span></li>
-            </ul>
-            </header>
+            {isAuth ? navigation : loginNavigation}
             <Routes>
-                <Route path="/" element={<TaskPage />}/>
+                <Route path="/" element={<GuardRoute />}>
+                    <Route path="/" element={<TaskPage />} />
+                </Route>
                 <Route path="/help" element={<HelpPage />}/>
-                <Route path="/login" element={<LoginPage />}/>
+                <Route path="/login" element={<LoginRoute />}>
+                    <Route path="/login" element={<LoginPage />} />
+                </Route>
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </>
     )

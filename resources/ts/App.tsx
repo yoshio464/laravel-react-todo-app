@@ -1,8 +1,9 @@
 import React from "react"
 import { Routers } from "./router"
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from "./hooks/AuthContext";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -17,9 +18,11 @@ const queryClient = new QueryClient({
 
 export const App: React.FC = () => {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ToastContainer />
-            <Routers />
-        </QueryClientProvider>
+        <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+                <ToastContainer />
+                <Routers />
+            </QueryClientProvider>
+        </AuthProvider>
     )
 }
