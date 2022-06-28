@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Routes, Route, Link, RouteProps, Navigate, Outlet } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, Outlet } from 'react-router-dom'
 import { TaskPage } from './pages/tasks'
 import { HelpPage } from './pages/help'
 import { LoginPage } from './pages/login'
