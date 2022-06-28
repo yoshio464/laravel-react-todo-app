@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;;
 
 class TaskPolicy
 {
@@ -13,13 +14,11 @@ class TaskPolicy
     /**
      *  @param \App\Models\User $user
      *  @param \App\Models\Task $task
-     *  @return true|void
+     *  @return bool
      */
     public function checkUser(User $user, Task $task)
     {
-        if ($user->id === $task->user_id) {
-            return true;
-        }
+        return $user->id === $task->user_id;
     }
 
     /**
